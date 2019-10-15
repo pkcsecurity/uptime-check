@@ -115,8 +115,8 @@ UptimeCheckCommand.usage =
   "PROJECTNAME PROJECTURL [PROJECTNAME2 PROJECTURL2...]";
 
 UptimeCheckCommand.examples = [
-  "$ ./bin/run CoolProject http://example.com AnotherProject https://cool.example.com",
-  "$ ./bin/run -i 600 CoolProject http://example.com"
+  "$ uptime-check CoolProject http://example.com AnotherProject https://cool.example.com",
+  "$ uptime-check -i 600 CoolProject http://example.com"
 ];
 
 UptimeCheckCommand.flags = {
