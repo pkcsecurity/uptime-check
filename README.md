@@ -20,10 +20,10 @@ Details of the uptime test results are logged to stdout (for both passes and fai
 
 # PostgreSQL Configuration
 You **must** have the following environment variables set in order to post metrics to PostgreSQL:
-    - PGHOST
-    - PGUSER
-    - PGPASSWORD
-    - PGDATABASE
+- PGHOST
+- PGUSER
+- PGPASSWORD
+- PGDATABASE
 
 You may specify additional variables according to the [libpq documentation](https://www.postgresql.org/docs/current/libpq-envars.html).
 
@@ -32,24 +32,18 @@ You may specify additional variables according to the [libpq documentation](http
 uptime-check PROJECTNAME PROJECTURL [PROJECTNAME2 PROJECTURL2...]
 ```
 ### Arguments
-  PROJECTNAME  Name of project for logging metrics
-  PROJECTURL   URL to check for the project
+- PROJECTNAME  Name of project for logging metrics
+- PROJECTURL   URL to check for the project
 
 ### Options
-  -h, --help               show CLI help
-  -i, --interval=interval  [default: 1800] interval to check on (in seconds)
-  -v, --version            show CLI version
+- -h, --help               show CLI help
+- -i, --interval=interval  [default: 1800] interval to check on (in seconds)
+- -v, --version            show CLI version
 
 ### Description
-  Specify the projects to check as arguments to this command, in projectName projectUrl pairs. You
-  may specify as many pairs as you'd like so long as each has both a name and a URL.
+Specify the projects to check as arguments to this command, in projectName projectUrl pairs. You may specify as many pairs as you'd like so long as each has both a name and a URL.
 
-  You MUST have the following environment variables set in order to post metrics:
-    - PGHOST
-    - PGUSER
-    - PGPASSWORD
-    - PGDATABASE
 
 ### Examples
-  $ uptime-check CoolProject http://example.com AnotherProject https://cool.example.com
-  $ uptime-check -i 600 CoolProject http://example.com
+`$ uptime-check CoolProject http://example.com AnotherProject https://cool.example.com`
+`$ uptime-check -i 600 CoolProject http://example.com`
