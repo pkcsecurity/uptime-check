@@ -7,14 +7,49 @@ uptime-check
 Periodically checks a list of projects for uptime.
 
 
-Currently the list of projects is hardcoded. Ideally this tool could accept additional projects at the command line - if you can get around to doing that before I can, feel free to submit a PR!
+# Installation
+```bash
+npm install
+npm link # Optional, otherwise use ./bin/run instead of uptime-check
+uptime-check CoolProject http://example.com
+```
+
+Execute `uptime-check` to begin polling the list of projects provided at the command line at a default interval of once every 30 minutes. It's recommended to background this process so you don't have to leave a terminal open.
+
+Details of the uptime test results are logged to stdout (for both passes and failures), and metrics are automatically posted to your PostgreSQL database (specified using environment variables) after each test run.
+
+# PostgreSQL Configuration
+You **must** have the following environment variables set in order to post metrics to PostgreSQL:
+    - PGHOST
+    - PGUSER
+    - PGPASSWORD
+    - PGDATABASE
+
+You may specify additional variables according to the [libpq documentation](https://www.postgresql.org/docs/current/libpq-envars.html).
 
 # Usage
 ```bash
-npm install
-./bin/run
+uptime-check PROJECTNAME PROJECTURL [PROJECTNAME2 PROJECTURL2...]
 ```
+### Arguments
+  PROJECTNAME  Name of project for logging metrics
+  PROJECTURL   URL to check for the project
 
-Execute `./bin/run` to begin polling the built-in list of projects at a default interval of once every 30 minutes. It's recommended to backgrond this process so you don't have to leave a terminal open. Details of the uptime test results are logged to stdout (for both passes and failures), and metrics are automatically posted to PKC's Grafana PostgreSQL database after each test run.
+### Options
+  -h, --help               show CLI help
+  -i, --interval=interval  [default: 1800] interval to check on (in seconds)
+  -v, --version            show CLI version
 
-You can customize the checking interval by passing the `-i` flag followed by an interval in seconds.
+### Description
+  Specify the projects to check as arguments to this command, in projectName projectUrl pairs. You
+  may specify as many pairs as you'd like so long as each has both a name and a URL.
+
+  You MUST have the following environment variables set in order to post metrics:
+    - PGHOST
+    - PGUSER
+    - PGPASSWORD
+    - PGDATABASE
+
+### Examples
+  $ uptime-check CoolProject http://example.com AnotherProject https://cool.example.com
+  $ uptime-check -i 600 CoolProject http://example.com

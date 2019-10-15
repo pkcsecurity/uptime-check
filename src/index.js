@@ -92,7 +92,7 @@ class UptimeCheckCommand extends Command {
     const { argv, flags } = this.parse(UptimeCheckCommand);
     if (argv.length % 2 !== 0) {
       this.error(
-        "Must provide an even number of arguments as projectName projectUri pairs! See -h for more info."
+        "Must provide an even number of arguments as projectName projectUrl pairs\nSee more help with --help"
       );
     }
     const interval = flags.interval;
@@ -100,9 +100,9 @@ class UptimeCheckCommand extends Command {
   }
 }
 
-UptimeCheckCommand.description = `Periodically checks a set of projects for uptime. See -h for more info.
-...
-You need to specify the projects to check as arguments to this command, in projectName projectUri pairs.
+UptimeCheckCommand.description = `Periodically checks a set of projects for uptime.
+
+Specify the projects to check as arguments to this command, in projectName projectUrl pairs. You may specify as many pairs as you'd like so long as each has both a name and a URL.
 
 You MUST have the following environment variables set in order to post metrics:
  - PGHOST
@@ -110,6 +110,9 @@ You MUST have the following environment variables set in order to post metrics:
  - PGPASSWORD
  - PGDATABASE
 `;
+
+UptimeCheckCommand.usage =
+  "PROJECTNAME PROJECTURL [PROJECTNAME2 PROJECTURL2...]";
 
 UptimeCheckCommand.examples = [
   "$ ./bin/run CoolProject http://example.com AnotherProject https://cool.example.com",
@@ -135,9 +138,9 @@ UptimeCheckCommand.args = [
     description: "Name of project for logging metrics"
   },
   {
-    name: "projectURI",
+    name: "projectURL",
     required: true,
-    description: "URI to check for the project"
+    description: "URL to check for the project"
   }
 ];
 
