@@ -7,7 +7,7 @@ uptime-check
 Periodically checks a list of projects for uptime.
 
 
-# Installation
+## Installation
 ```bash
 npm install
 npm link # Optional, otherwise use ./bin/run instead of uptime-check
@@ -18,7 +18,7 @@ Execute `uptime-check` to begin polling the list of projects provided at the com
 
 Details of the uptime test results are logged to stdout (for both passes and failures), and metrics are automatically posted to your PostgreSQL database (specified using environment variables) after each test run.
 
-# PostgreSQL Configuration
+## PostgreSQL Configuration
 You **must** have the following environment variables set in order to post metrics to PostgreSQL:
 - PGHOST
 - PGUSER
@@ -27,7 +27,7 @@ You **must** have the following environment variables set in order to post metri
 
 You may specify additional variables according to the [libpq documentation](https://www.postgresql.org/docs/current/libpq-envars.html).
 
-# Usage
+## Usage
 ```bash
 uptime-check PROJECTNAME PROJECTURL [PROJECTNAME2 PROJECTURL2...]
 ```
@@ -41,9 +41,10 @@ uptime-check PROJECTNAME PROJECTURL [PROJECTNAME2 PROJECTURL2...]
 - -v, --version            show CLI version
 
 ### Description
-Specify the projects to check as arguments to this command, in projectName projectUrl pairs. You may specify as many pairs as you'd like so long as each has both a name and a URL.
+Specify the projects to check as arguments to this command, in `projectName` `projectUrl` pairs. You may specify as many pairs as you'd like so long as each has both a name and a URL.
 
 
 ### Examples
 `$ uptime-check CoolProject http://example.com AnotherProject https://cool.example.com`
+
 `$ uptime-check -i 600 CoolProject http://example.com`
