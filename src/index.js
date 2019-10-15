@@ -30,7 +30,7 @@ async function sendMetric(projectName, isUp, latency) {
 
 function check(projectsToCheck) {
   return async () => {
-    for (let { name, uri } of projectsToCheck) {
+    for (let [name, uri] of projectsToCheck) {
       try {
         const res = await request({
           resolveWithFullResponse: true,
@@ -81,7 +81,7 @@ function main(projectsToCheck, interval) {
   console.log("Connecting to Grafana PostgreSQL database...");
   PG_CLIENT.connect();
 
-  const projects = projectsToCheck.map(({ name }) => name);
+  const projects = projectsToCheck.map(proj => proj[0]);
   console.log(`Checking ${projects.join(", ")} every ${interval} seconds...`);
   const timer = setInterval(check(projectsToCheck), interval * 1000);
   return timer;
