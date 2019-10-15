@@ -17,7 +17,7 @@ async function sendMetric(projectName, isUp, latency) {
       await PG_CLIENT.query({
         text:
           "INSERT INTO uptime (date, project, is_up, latency) VALUES (NOW(), $1, $2, $3);",
-        values: [projectName, isUp, latency]
+        values: [projectName, isUp, Math.round(latency)]
       });
     }
 
