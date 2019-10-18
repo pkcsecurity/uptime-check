@@ -66,8 +66,6 @@ function main(projectsToCheck, interval) {
     "exit",
     "SIGINT",
     "SIGTERM",
-    "SIGUSR1",
-    "SIGUSR2",
     "uncaughtException",
     "unhandledRejection"
   ].forEach(e =>
