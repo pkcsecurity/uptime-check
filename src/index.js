@@ -62,20 +62,6 @@ function check(projectsToCheck) {
 }
 
 function main(projectsToCheck, interval) {
-  [
-    "exit",
-    "SIGINT",
-    "SIGTERM",
-    "uncaughtException",
-    "unhandledRejection"
-  ].forEach(e =>
-    process.on(e, () => {
-      console.log("Exiting...");
-      PG_CLIENT.end(); // Close the PostgreSQL client connection
-      process.exit();
-    })
-  );
-
   console.log("Connecting to Grafana PostgreSQL database...");
   PG_CLIENT.connect();
 
