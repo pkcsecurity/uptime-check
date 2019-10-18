@@ -3,29 +3,35 @@ const _ = require("lodash");
 const request = require("request-promise-native").defaults({ strictSSL: true });
 const { Client } = require("pg");
 
-const PG_CLIENT = new Client();
-
 async function sendMetric(projectName, isUp, latency) {
+  let ret = false;
   try {
-    const { rowCount, rows } = await PG_CLIENT.query({
-      text:
-        "SELECT is_up FROM uptime WHERE project = $1 ORDER BY date DESC LIMIT 1;",
-      values: [projectName]
-    });
+    const PG_CLIENT = new Client();
 
-    if (rowCount === 0 || rows[0].is_up !== isUp) {
-      await PG_CLIENT.query({
+    try {
+      const { rowCount, rows } = await PG_CLIENT.query({
         text:
-          "INSERT INTO uptime (date, project, is_up, latency) VALUES (NOW(), $1, $2, $3);",
-        values: [projectName, isUp, Math.round(latency)]
+          "SELECT is_up FROM uptime WHERE project = $1 ORDER BY date DESC LIMIT 1;",
+        values: [projectName]
       });
-    }
 
-    return true;
-  } catch (err) {
-    console.error(`Failed trying to query/post metrics: ${err}`);
-    return false;
+      if (rowCount === 0 || rows[0].is_up !== isUp) {
+        await PG_CLIENT.query({
+          text:
+            "INSERT INTO uptime (date, project, is_up, latency) VALUES (NOW(), $1, $2, $3);",
+          values: [projectName, isUp, Math.round(latency)]
+        });
+      }
+      ret = true;
+    } catch (err) {
+      console.error(`Failed trying to query/post metrics: ${err}`);
+    } finally {
+      await PG_CLIENT.end();
+    }
+  } catch (e) {
+    console.error(`Could not connect to the database: ${e}`);
   }
+  return ret;
 }
 
 function check(projectsToCheck) {
@@ -62,9 +68,6 @@ function check(projectsToCheck) {
 }
 
 function main(projectsToCheck, interval) {
-  console.log("Connecting to Grafana PostgreSQL database...");
-  PG_CLIENT.connect();
-
   const projects = projectsToCheck.map(proj => proj[0]);
   console.log(`Checking ${projects.join(", ")} every ${interval} seconds...`);
   const timer = setInterval(check(projectsToCheck), interval * 1000);
